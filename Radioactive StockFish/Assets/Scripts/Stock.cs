@@ -1,31 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Stock : MonoBehaviour {
 
 	private Stack<double> rates;
-	private String name;
-	private String imgPath;
+	private string name;
+	private string imgPath;
 	
-	public Stock (String name)
+	public Stock (string name)
 	{
 		this.name = name;
 		this.rates = new Stack<double> ();
 	}
 	
-	public String GetImgPath() {
+	public string GetImgPath() {
 		return this.imgPath;
 	}
 	
-	public void SetImgPath(String imgPath) {
+	public void SetImgPath(string imgPath) {
 		this.imgPath = imgPath;
 	}
 	
 	public void SetNextRate(double rate) {
-		this.rates.push (rate);
+		this.rates.Push (rate);
 	}
 	
-	public Stack<double> getRates() {
+	public Stack<double> GetRates() {
 		return this.rates;
+	}
+
+	public string GetName() {
+		return this.name;
 	}
 }

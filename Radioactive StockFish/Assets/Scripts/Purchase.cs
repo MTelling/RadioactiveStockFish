@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Purchase {
 
-    private Stock name;
+    private string name;
     private int amount;
     private double price;
 
@@ -14,15 +14,23 @@ public class Purchase {
         this.price = price;
     }
 
-    public void buy(int amount, double price)
+    public void New(int amount, double price)
     {
         this.amount += amount;
         this.price += price;
     }
 
-    public void sell(int amount)
+    public void Sell(int amount)
     {
         this.price -= (amount / this.amount) * this.price;
         this.amount -= amount;
     }
+
+	public string GetName() {
+		return this.name;
+	}
+
+	public string GetAmount() {
+		return this.amount;
+	}
 }
