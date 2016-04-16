@@ -8,10 +8,11 @@ public class Stock : MonoBehaviour {
 	private string name;
 	private string imgPath;
 	
-	public Stock (string name)
+	public Stock (string name, double startRate)
 	{
 		this.name = name;
 		this.rates = new Stack<double> ();
+		rates.Push (startRate);
 	}
 	
 	public string GetImgPath() {
