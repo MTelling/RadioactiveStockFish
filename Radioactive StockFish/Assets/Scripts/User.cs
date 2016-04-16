@@ -12,7 +12,7 @@ public class User : MonoBehaviour {
 	public User(string name, double cash) {
 		this.name = name;
 		this.cash = cash;
-		this.purchases = new LinkedList<Purchase> ();
+		this.purchases = new List<Purchase> ();
 	}
 
 	//Returns false if the amount is too much. 
@@ -65,17 +65,17 @@ public class User : MonoBehaviour {
 		return isSold;
 	}
 
-	public bool MakeBet(Stock stock, int betPrice, double goalRate, int time) {
+	public bool MakeBet(Stock stock, double betPrice, double goalRate, int time) {
 		bool isBetMade = false;
 		if (betPrice <= this.cash) {
-			this.bets.Add (new Bet(stock.GetName(), betPrice, stock.GetRates().Peek (), goalRate, time));
+			this.bets.Add (new Bet(stock, betPrice, stock.GetRates().Peek (), goalRate, time));
 			isBetMade = true;
 		}
 
 		return isBetMade;
 	}
 
-	public bool CheckBets() {
+	public void CheckBets() {
 		List<Bet> doneBets = new List<Bet> ();
 		foreach (Bet bet in bets) {
 			if (bet.Tick()) { //This is true if the time is up for the bet. 

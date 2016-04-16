@@ -4,15 +4,15 @@ using System;
 
 public class Bet : MonoBehaviour {
 
-	private string stockName;
+	private Stock stock;
 	private double betPrice;
 	private double goalRate;
 	private double betRate;
 	private int time;
 	private int odds;
 
-	public Bet(string stockName, double betPrice, double betRate, double goalRate, int time) {
-		this.stockName = stockName;
+	public Bet(Stock stock, double betPrice, double betRate, double goalRate, int time) {
+		this.stock = stock;
 		this.betPrice = betPrice;
 		this.betRate = betRate;
 		this.goalRate = goalRate;
@@ -30,9 +30,10 @@ public class Bet : MonoBehaviour {
 		}
 	}
 
-	public double GetAward(double currentRate) {
+	public double GetAward() {
 		double percentage = 1 + Math.Abs (goalRate - betRate) / betRate;
 		double award = 0;
+		double currentRate = stock.GetRates ().Peek ();
 
 		if (betRate > goalRate) { //Bet was on the stock going down. 
 			if (currentRate <= goalRate) {

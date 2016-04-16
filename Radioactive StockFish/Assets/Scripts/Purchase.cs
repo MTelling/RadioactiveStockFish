@@ -7,7 +7,7 @@ public class Purchase {
     private int amount;
     private double price;
 
-    public Purchase(Stock name, int amount, double price)
+    public Purchase(string name, int amount, double price)
     {
         this.name = name;
         this.amount = amount;
@@ -30,7 +30,7 @@ public class Purchase {
 		return this.name;
 	}
 
-	public string GetAmount() {
+	public int GetAmount() {
 		return this.amount;
 	}
 }

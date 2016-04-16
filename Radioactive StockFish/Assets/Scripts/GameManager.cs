@@ -18,7 +18,12 @@ public class GameManager : MonoBehaviour {
 		Stock apple = new Stock ("Apple", 100);
 		Stock mlh = new Stock ("Major League Hacking", 240);
 
-		this.stocks.Add (amazon, microsoft, dexi, apple, mlh);
+		this.stocks.Add (amazon);
+		this.stocks.Add (microsoft);
+		this.stocks.Add (dexi);
+		this.stocks.Add (apple);
+		this.stocks.Add (mlh);
+
 	}
 
 	//Sets the time forward a day. 
