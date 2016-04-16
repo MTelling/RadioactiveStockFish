@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Radioactive StockFish/Assets/Scripts/Purchase.cs.meta
 guid: a8662b4c67599714daa94b376a2be2e0
 timeCreated: 1460825349
+=======
+guid: 40f59e7ebc85e47ba85bb0ad91f55390
+timeCreated: 1460823524
+>>>>>>> origin/master:Radioactive StockFish/Assets/Scripts/Purchase.cs.meta
 licenseType: Free
 MonoImporter:
   serializedVersion: 2

@@ -1,28 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Stock : MonoBehaviour {
 
 	private Stack<double> rates;
-	private String name;
-	private String imgPath;
+	private string name;
+	private string imgPath;
 	
-	public Stock (String name)
+	public Stock (string name, double startRate)
 	{
 		this.name = name;
 		this.rates = new Stack<double> ();
+		rates.Push (startRate);
 	}
 	
-	public String GetImgPath() {
+	public string GetImgPath() {
 		return this.imgPath;
 	}
 	
-	public void SetImgPath(String imgPath) {
+	public void SetImgPath(string imgPath) {
 		this.imgPath = imgPath;
 	}
 	
 	public void SetNextRate(double rate) {
-		this.rates.push (rate);
+		this.rates.Push (rate);
 	}
 	
 	public Stack<double> GetRates() {
@@ -137,4 +139,8 @@ public class Stock : MonoBehaviour {
         return output;
 
     }
+
+	public string GetName() {
+		return this.name;
+	}
 }
