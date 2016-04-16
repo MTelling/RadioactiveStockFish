@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class User : MonoBehaviour {
 
 	private List<Purchase> purchases;
+	private List<Bet> bets;
 	private string name;
 	private double cash;
 
@@ -18,14 +19,12 @@ public class User : MonoBehaviour {
 	public bool Buy(Stock stock, int amount)  {
 		double stockPrice = stock.GetRates ().Peek();
 		string stockName = stock.GetName ();
-
 		double buyPrice = stockPrice * amount;
 
 		//If the user hasn't got enough money. Return false.
 		if (buyPrice > this.cash) {
 			return false;
 		} 
-
 
 		bool stockInInventory = false;
 		//If the user has enough money buy the stock. 
@@ -40,6 +39,8 @@ public class User : MonoBehaviour {
 		if (!stockInInventory) {
 			this.purchases.Add (new Purchase(stock.GetName (), amount, buyPrice));
 		}
+
+		this.cash -= buyPrice;
 
 		return true;
 	}
@@ -62,6 +63,31 @@ public class User : MonoBehaviour {
 		}
 
 		return isSold;
+	}
+
+	public bool MakeBet(Stock stock, int betPrice, double goalRate, int time) {
+		bool isBetMade = false;
+		if (betPrice <= this.cash) {
+			this.bets.Add (new Bet(stock.GetName(), betPrice, stock.GetRates().Peek (), goalRate, time));
+			isBetMade = true;
+		}
+
+		return isBetMade;
+	}
+
+	public bool CheckBets() {
+		List<Bet> doneBets = new List<Bet> ();
+		foreach (Bet bet in bets) {
+			if (bet.Tick()) { //This is true if the time is up for the bet. 
+				this.cash += bet.GetAward();
+				doneBets.Add (bet);
+			}
+		}
+
+		//Remove all the bets that are done. 
+		foreach (Bet bet in doneBets) {
+			this.bets.Remove (bet);
+		}
 	}
 
 
