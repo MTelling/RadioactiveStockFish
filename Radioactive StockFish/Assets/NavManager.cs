@@ -9,10 +9,11 @@ public class NavManager : MonoBehaviour {
     public GameObject OverviewPanel_object;
     // Use this for initialization
     void Start () {
-
+/*
        BetPopUP_object = GameObject.FindGameObjectWithTag("BetPopUP");
        BuyPanel_object = GameObject.FindGameObjectWithTag("BuyPanel");
        OverviewPanel_object = GameObject.FindGameObjectWithTag("OverviewPanel");
+       */
 	}
 
 	

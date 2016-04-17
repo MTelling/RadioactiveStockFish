@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject betAmount;
 	public GameObject betTime;
 
+    public GameObject NavManager;
+
 
 	private int activeStockNum;
 
@@ -54,9 +56,10 @@ public class GameManager : MonoBehaviour {
 		BuyStock ("Bloomberg", 2, true);
 		BuyStock ("DotTech", 1, true);
 
-		setBetView ();
+        NavManager = GameObject.FindGameObjectWithTag("NavigationManager");
+
+        setBetView ();
 		updateUI ();
-		GameObject.FindGameObjectWithTag ("OverviewPanel").active = true;
 
 	}
 
@@ -119,7 +122,7 @@ public class GameManager : MonoBehaviour {
 		MakeBet (stocks [activeStockNum].GetName (), 200, stocks [activeStockNum].GetRates().Peek() + amountUpDown, actTime);
 
 		updateUI ();
-		GameObject.FindGameObjectWithTag ("NavigationManager").GetComponent<NavManager> ().BetPopUP_object.active = false;
+        NavManager.GetComponent<NavManager> ().BetPopUP_object.active = false;
 
 		Debug.Log ("Click");
 
@@ -171,7 +174,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void OpenBuyPanel(int stocknr) {
-		GameObject.FindGameObjectWithTag ("NavigationManager").GetComponent<NavManager> ().BuyPanel_object.active = true;
+        NavManager.GetComponent<NavManager> ().BuyPanel_object.active = true;
 
 		this.activeStockNum = stocknr;
 		updateUI ();
