@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class NavManager : MonoBehaviour {
 
-    public Image popUp;
+    public ScrollRect popUp;
 	// Use this for initialization
 	void Start () {
 	
@@ -30,6 +30,8 @@ public class NavManager : MonoBehaviour {
     {
          if(GameObject.FindGameObjectWithTag("BetPopUP") != null)
             GameObject.FindGameObjectWithTag("BetPopUP").SetActive(true);
+
+		popUp.enabled = true;
     }
 
 }

@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour {
 	public GameObject userLbl;
 	public GameObject aiLbl;
 
+	public GameObject betAmount;
+	public GameObject betTime;
+
 
 	private int activeStockNum;
 
@@ -36,6 +39,7 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		init();
 		round = 1;
+		activeStockNum = 1;
 		InvokeRepeating ("GoToNextDay", 1, 2f);
 
 		BuyStock ("Amazon", 3);
@@ -52,6 +56,8 @@ public class GameManager : MonoBehaviour {
 
 		setBetView ();
 		updateUI ();
+		GameObject.FindGameObjectWithTag ("OverviewPanel").active = true;
+
 	}
 
 	public void init() {
@@ -61,10 +67,10 @@ public class GameManager : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("aiCash") == 0) {
 			PlayerPrefs.SetInt ("aiCash", 5000);
 		}
-			
 
-		this.user = new User ("user", PlayerPrefs.GetInt("userCash"));
-		this.ai = new User ("ai", PlayerPrefs.GetInt("aiCash"));
+		//The error is here: 
+		this.user = new User ("user", 5000);
+		this.ai = new User ("ai", 5000);
 		this.stocks = new List<Stock> ();
 
 		Stock amazon = new Stock ("Amazon", 300, 0.01);
@@ -103,6 +109,13 @@ public class GameManager : MonoBehaviour {
 
 	public void Sell() {
 		SellStock (stocks [activeStockNum].GetName (), Int32.Parse(buyAmount.GetComponent<InputField> ().text));
+		updateUI ();
+	}
+
+	public void Bet() {
+		double amountUpDown = Double.Parse(betAmount.GetComponent<InputField> ().text);
+		int actTime = Int32.Parse (betTime.GetComponent<InputField> ().text);
+		MakeBet (stocks [activeStockNum].GetName (), 200, stocks [activeStockNum].GetRates().Peek() + amountUpDown, actTime);
 		updateUI ();
 	}
 
@@ -146,8 +159,8 @@ public class GameManager : MonoBehaviour {
 		UpdatePanelView ();
 
 		//Update the score board
-		//userLbl.GetComponent<Text> ().text = user.GetTotalCash();
-		//aiLbl.GetComponent<Text> ().text = ai.GetTotalCash();
+		userLbl.GetComponent<Text> ().text = Math.Round(user.GetTotalCash(),0).ToString();
+		aiLbl.GetComponent<Text> ().text = Math.Round(ai.GetTotalCash(),0).ToString();
 
 	}
 
@@ -162,11 +175,11 @@ public class GameManager : MonoBehaviour {
 		//This parts draws to the stock view. I have no idea where or how to do this. 
 		barGraph.drawGraph (stocks [activeStockNum]);
 
-		currRate.GetComponent<Text> ().text = Math.Round(stocks[activeStockNum].GetRates().Peek(), 2).ToString();
-		stockName.GetComponent<Text> ().text = stocks[activeStockNum].GetName();
-		profitLbl.GetComponent<Text> ().text = Math.Round(user.GetPurchases()[activeStockNum].GetProfit(),2).ToString();
-		totalLbl.GetComponent<Text> ().text = Math.Round(user.GetPurchases()[activeStockNum].GetCurrentPrice(),2).ToString();
-		amountLbl.GetComponent<Text> ().text = user.GetPurchases()[activeStockNum].GetAmount().ToString();
+		currRate.GetComponent<Text> ().text = Math.Round (stocks [activeStockNum].GetRates ().Peek (), 2).ToString ();
+		stockName.GetComponent<Text> ().text = stocks [activeStockNum].GetName ();
+		profitLbl.GetComponent<Text> ().text = Math.Round (user.GetPurchases () [activeStockNum].GetProfit (), 2).ToString ();
+		totalLbl.GetComponent<Text> ().text = Math.Round (user.GetPurchases () [activeStockNum].GetCurrentPrice (), 2).ToString ();
+		amountLbl.GetComponent<Text> ().text = user.GetPurchases () [activeStockNum].GetAmount ().ToString ();
 	}
 
 
