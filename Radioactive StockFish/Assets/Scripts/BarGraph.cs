@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
 public class BarGraph : MonoBehaviour {
 
-    public int barCount = 15;
-    public int barSize = 48;
+    public int barCount = 20;
+    public int barSize = 30;
     public GameObject barPrefab;
 
     public void Start() {
@@ -15,11 +14,10 @@ public class BarGraph : MonoBehaviour {
             GameObject bar = Instantiate(barPrefab, new Vector3(barSize + (barSize * i), barSize, 0), Quaternion.identity) as GameObject;
             bar.name = "Bar #" + i;
             bar.transform.SetParent(this.transform, true);
+
         }
 
-        Stock a = new Stock("Amazon", 100, 0.03);
-        for (int i = 0; i < barCount; i++) a.SetNextRate();
-        this.drawGraph(a);
+       
     }
 
     public void drawGraph(Stock stock) {
@@ -28,16 +26,16 @@ public class BarGraph : MonoBehaviour {
 
         if (priceList.Length >= barCount) {
             int maxSize = 0;
+
             for (int i = priceList.Length - 1; i > priceList.Length - barCount; i--) {
                 if (priceList[i] > maxSize) maxSize = (int) (Math.Ceiling(priceList[i] / 100d));
-                Debug.Log(Math.Ceiling((priceList[i] / 100d) * 100));
             }
 
-            for (int i = barCount - 1; i >= 0; i--) {
-                int percentageValue = (int)Math.Floor(dupeStack.Pop() / maxSize);
-                this.transform.GetChild(i).GetComponent<Slider>().value = percentageValue;
-                Debug.Log(percentageValue);
+			for (int i = 1; i < barCount + 1; i++) {
+				int percentageValue = (int)Math.Floor(priceList[priceList.Length - i] / maxSize);
+                this.transform.GetChild(barCount - i).GetComponent<Slider>().value = percentageValue;
             }
         }
+        
     }
 }

@@ -11,13 +11,25 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject stockPanel;
 	public GameObject betPanel;
+	public BarGraph barGraph;
+
+	public GameObject currRate;
+	public GameObject stockName;
+	public GameObject buyBtn;
+	public GameObject buyAmount;
+	public GameObject amountLbl;
+	public GameObject totalLbl;
+	public GameObject profitLbl;
+
+	public GameObject sellBtn;
+
 
 	private int round;
 
 	void Start() {
 		init();
 		round = 1;
-		InvokeRepeating ("GoToNextDay", 1, 0.5f);
+		InvokeRepeating ("GoToNextDay", 1, 10f);
 	
 
 		BuyStock ("Amazon", 3);
@@ -29,6 +41,20 @@ public class GameManager : MonoBehaviour {
 		setBetView ();
 		updateUI ();
 
+		buyBtn.GetComponent<Button>().onClick.AddListener(() => Buy());
+		sellBtn.GetComponent<Button>().onClick.AddListener(() => Sell());
+
+
+	}
+
+	private void Buy() {
+		Debug.Log(BuyStock (stocks [0].GetName (), Int32.Parse(buyAmount.GetComponent<InputField> ().text)));
+		updateUI ();
+	}
+
+	private void Sell() {
+		Debug.Log(SellStock (stocks [0].GetName (), Int32.Parse(buyAmount.GetComponent<InputField> ().text)));
+		updateUI ();
 	}
 
 	public void updateStockView() {
@@ -65,8 +91,18 @@ public class GameManager : MonoBehaviour {
 
 
 	public void updateUI() {
+
 		updateStockView ();
 		updateBetView ();
+
+
+		//This parts draws to the stock view. I have no idea where or how to do this. 
+		barGraph.drawGraph (stocks [0]);
+		currRate.GetComponent<Text> ().text = Math.Round(stocks[0].GetRates().Peek(), 2).ToString();
+		stockName.GetComponent<Text> ().text = stocks[0].GetName();
+		profitLbl.GetComponent<Text> ().text = Math.Round(user.GetPurchases()[0].GetProfit(),2).ToString();
+		totalLbl.GetComponent<Text> ().text = Math.Round(user.GetPurchases()[0].GetCurrentPrice(),2).ToString();
+		amountLbl.GetComponent<Text> ().text = user.GetPurchases()[0].GetAmount().ToString();
 	}
 
 	public void init() {
@@ -84,6 +120,14 @@ public class GameManager : MonoBehaviour {
 		this.stocks.Add (microsoft);
 		this.stocks.Add (apple);
 		this.stocks.Add (mlh);
+
+		for (int i = 0; i < 60; i++) {
+			amazon.SetNextRate ();
+			microsoft.SetNextRate ();
+			dexi.SetNextRate ();
+			apple.SetNextRate ();
+			mlh.SetNextRate ();
+		}
 
 	}
 
