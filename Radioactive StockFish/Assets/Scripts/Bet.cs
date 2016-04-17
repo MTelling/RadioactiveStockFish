@@ -48,4 +48,22 @@ public class Bet {
 		return award;
 	}
 
+	public string GetName() {
+		return stock.GetName ();
+	}
+
+	public int GetTime() {
+		return this.time;
+	}
+
+
+	public double GetBetPrice() {
+		return this.betPrice;
+	}
+
+	public double GetExpectedAward() {
+		double percentage = 1 + Math.Abs (goalRate - betRate) / betRate;
+		return betPrice * percentage * odds;
+	}
+
 }

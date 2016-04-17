@@ -41,4 +41,8 @@ public class Purchase {
 	public double GetProfit() {
 		return GetCurrentPrice () - this.price;
 	}
+
+	public double GetCurrentRate() {
+		return stock.GetRates ().Peek ();
+	}
 }

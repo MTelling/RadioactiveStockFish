@@ -67,9 +67,13 @@ public class User {
 
 	public bool MakeBet(Stock stock, double betPrice, double goalRate, int time) {
 		bool isBetMade = false;
-		if (betPrice <= this.cash) {
-			this.bets.Add (new Bet(stock, betPrice, stock.GetRates().Peek (), goalRate, time));
-			isBetMade = true;
+
+		if (bets.ToArray().Length < 10) {
+				
+			if (betPrice <= this.cash) {
+				this.bets.Add (new Bet (stock, betPrice, stock.GetRates ().Peek (), goalRate, time));
+				isBetMade = true;
+			}
 		}
 
 		return isBetMade;
