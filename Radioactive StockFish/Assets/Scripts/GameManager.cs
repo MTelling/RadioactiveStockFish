@@ -113,10 +113,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Bet() {
+
 		double amountUpDown = Double.Parse(betAmount.GetComponent<InputField> ().text);
 		int actTime = Int32.Parse (betTime.GetComponent<InputField> ().text);
 		MakeBet (stocks [activeStockNum].GetName (), 200, stocks [activeStockNum].GetRates().Peek() + amountUpDown, actTime);
+
 		updateUI ();
+		GameObject.FindGameObjectWithTag ("NavigationManager").GetComponent<NavManager> ().BetPopUP_object.active = false;
+
+		Debug.Log ("Click");
+
 	}
 
 	public void updateStockView() {
@@ -165,7 +171,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void OpenBuyPanel(int stocknr) {
-		GameObject.FindGameObjectWithTag ("OverviewPanel").active = false;
+		GameObject.FindGameObjectWithTag ("NavigationManager").GetComponent<NavManager> ().BuyPanel_object.active = true;
+
 		this.activeStockNum = stocknr;
 		updateUI ();
 
