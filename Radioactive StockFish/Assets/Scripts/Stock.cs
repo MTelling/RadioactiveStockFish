@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Stock {
 
-	private const double LOWEST_PRICE_IN_PERCENT = 0.02;
-	private const double CHANCE_OF_DEEP_DIVE = 0.7;
-	private const double DEEP_DIVE_HIGH_CAP = 0.29;
-	private const double DEEP_DIVE_LOW_CAP = 0.07;
+	private double LOWEST_PRICE_IN_PERCENT = 0.02;
+	private double CHANCE_OF_DEEP_DIVE = 0.7;
+	private double DEEP_DIVE_HIGH_CAP = 0.29;
+	private double DEEP_DIVE_LOW_CAP = 0.07;
 
 	private double volatility;
 	private double lowerPriceCap;
@@ -16,6 +16,13 @@ public class Stock {
 	private string stockName;
 	private string imgPath;
 	private System.Random rnd;
+
+	public void SetConstants(double lowest, double dive, double diveHighCap, double diveLowCap) {
+		this.CHANCE_OF_DEEP_DIVE = dive;
+		this.DEEP_DIVE_HIGH_CAP = diveHighCap;
+		this.DEEP_DIVE_LOW_CAP = diveLowCap;
+		this.LOWEST_PRICE_IN_PERCENT = lowest;
+	}
 	
 	public Stock (string stockName, double startRate, double volatility)
 	{
