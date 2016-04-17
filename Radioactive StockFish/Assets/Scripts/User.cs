@@ -41,6 +41,8 @@ public class User {
 		}
 
 		this.cash -= buyPrice;
+		PlayerPrefs.SetInt (this.userName + "Cash", (int)this.cash);
+
 
 		return true;
 	}
@@ -57,6 +59,8 @@ public class User {
 				if (purchase.GetAmount() >= amount) {
 					purchase.Sell(amount);
 					this.cash += sellPrice;
+					PlayerPrefs.SetInt (this.userName + "Cash", (int)this.cash);
+
 					isSold = true;
 				}
 			}
@@ -73,6 +77,10 @@ public class User {
 			if (betPrice <= this.cash) {
 				this.bets.Add (new Bet (stock, betPrice, stock.GetRates ().Peek (), goalRate, time));
 				isBetMade = true;
+
+				this.cash -= betPrice;
+				PlayerPrefs.SetInt (this.userName + "Cash", (int)this.cash);
+
 			}
 		}
 
@@ -84,6 +92,8 @@ public class User {
 		foreach (Bet bet in bets) {
 			if (bet.Tick()) { //This is true if the time is up for the bet. 
 				this.cash += bet.GetAward();
+				PlayerPrefs.SetInt (this.userName + "Cash", (int)this.cash);
+
 				doneBets.Add (bet);
 			}
 		}
