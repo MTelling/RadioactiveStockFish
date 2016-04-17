@@ -11,7 +11,7 @@ public class User : MonoBehaviour {
 	public User(string name, double cash) {
 		this.name = name;
 		this.cash = cash;
-		this.purchases = new LinkedList<Purchase> ();
+		this.purchases = new List<Purchase> ();
 	}
 
 	//Returns false if the amount is too much. 
