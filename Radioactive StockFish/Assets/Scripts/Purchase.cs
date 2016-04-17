@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Purchase {
 
-    private string name;
+    private Stock stock;
     private int amount;
     private double price;
 
-    public Purchase(string name, int amount, double price)
+    public Purchase(Stock stock, int amount, double price)
     {
-        this.name = name;
+        this.stock = stock;
         this.amount = amount;
         this.price = price;
     }
@@ -22,15 +22,23 @@ public class Purchase {
 
     public void Sell(int amount)
     {
-        this.price -= (amount / this.amount) * this.price;
+		this.price -= ((double)amount / (double)this.amount) * this.price;
         this.amount -= amount;
     }
 
 	public string GetName() {
-		return this.name;
+		return this.stock.GetName();
 	}
 
 	public int GetAmount() {
 		return this.amount;
+	}
+
+	public double GetCurrentPrice() {
+		return this.amount * this.stock.GetRates ().Peek ();
+	}
+
+	public double GetProfit() {
+		return GetCurrentPrice () - this.price;
 	}
 }

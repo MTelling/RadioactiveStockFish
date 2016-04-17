@@ -85,7 +85,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Purchase.cs" />
     <Compile Include="Assets\Scripts\Stock.cs" />
-    <Compile Include="Assets\Scripts\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
