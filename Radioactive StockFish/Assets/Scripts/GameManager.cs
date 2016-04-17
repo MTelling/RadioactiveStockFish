@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		init();
 		round = 1;
-		InvokeRepeating ("GoToNextDay", 1, 10f);
+		InvokeRepeating ("GoToNextDay", 1, 0.05f);
 	
 
 		BuyStock ("Amazon", 3);
