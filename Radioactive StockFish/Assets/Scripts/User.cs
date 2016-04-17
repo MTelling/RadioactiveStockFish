@@ -2,23 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class User : MonoBehaviour {
+public class User {
 
 	private List<Purchase> purchases;
 	private List<Bet> bets;
-	private string name;
+	private string userName;
 	private double cash;
 
-	public User(string name, double cash) {
-		this.name = name;
+	public User(string userName, double cash) {
+		this.userName = userName;
 		this.cash = cash;
 		this.purchases = new List<Purchase> ();
+		this.bets = new List<Bet> ();
 	}
 
 	//Returns false if the amount is too much. 
 	public bool Buy(Stock stock, int amount)  {
 		double stockPrice = stock.GetRates ().Peek();
-		string stockName = stock.GetName ();
 		double buyPrice = stockPrice * amount;
 
 		//If the user hasn't got enough money. Return false.
@@ -29,7 +29,7 @@ public class User : MonoBehaviour {
 		bool stockInInventory = false;
 		//If the user has enough money buy the stock. 
 		foreach (Purchase purchase in purchases) {
-			if(purchase.GetName().Equals(stockName)) {
+			if(purchase.GetName().Equals(stock.GetName())) {
 				purchase.New(amount, buyPrice);
 				stockInInventory = true;
 			}
@@ -37,7 +37,7 @@ public class User : MonoBehaviour {
 
 		//If the user didn't have the stock already, add it to the list of stocks. 
 		if (!stockInInventory) {
-			this.purchases.Add (new Purchase(stock.GetName (), amount, buyPrice));
+			this.purchases.Add (new Purchase(stock, amount, buyPrice));
 		}
 
 		this.cash -= buyPrice;
@@ -90,5 +90,26 @@ public class User : MonoBehaviour {
 		}
 	}
 
+	public List<Purchase> GetPurchases() {
+		return this.purchases;
+	}
+
+	public List<Bet> GetBets() {
+		return this.bets;
+	}
+
+	public double GetCash(){
+		return this.cash;
+	}
+
+	public double GetTotalCash() {
+		double sum = 0;
+		foreach (Purchase purchase in purchases) {
+			sum += purchase.GetCurrentPrice();
+		}
+
+		sum += this.cash;
+		return sum;
+	}
 
 }

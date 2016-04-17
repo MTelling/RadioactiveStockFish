@@ -2,17 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Stock : MonoBehaviour {
+public class Stock {
+
+	private const double LOWEST_PRICE_IN_PERCENT = 0.02;
+	private const double CHANCE_OF_DEEP_DIVE = 0.7;
+	private const double DEEP_DIVE_HIGH_CAP = 0.29;
+	private const double DEEP_DIVE_LOW_CAP = 0.07;
+
+	private double volatility;
+	private double lowerPriceCap;
 
 	private Stack<double> rates;
-	private string name;
+	private string stockName;
 	private string imgPath;
+	private System.Random rnd;
 	
-	public Stock (string name, double startRate)
+	public Stock (string stockName, double startRate, double volatility)
 	{
-		this.name = name;
+		this.stockName = stockName;
 		this.rates = new Stack<double> ();
 		rates.Push (startRate);
+		this.rnd = new System.Random ();
+
+		this.volatility = volatility;
+
+		this.lowerPriceCap = LOWEST_PRICE_IN_PERCENT * startRate;
 	}
 	
 	public string GetImgPath() {
@@ -23,124 +37,44 @@ public class Stock : MonoBehaviour {
 		this.imgPath = imgPath;
 	}
 	
-	public void SetNextRate(double rate) {
-		this.rates.Push (rate);
+	public void SetNextRate() {
+		this.rates.Push (NextPrice ());
 	}
 	
 	public Stack<double> GetRates() {
 		return this.rates;
 	}
 
-    public static double NextPrice()
-    {
-        double output = 0;
-        switch (rnd.Next(1, 11))
-        {
-            case 1:
-                if ((double)rnd.Next(1, 11) > 8)
-                {
-                    output = rates.Peek() - ((double)rnd.Next(4, 19) / (double)rnd.Next(97, 101)) * rates.Peek(); // Do a deep dive!
-                }
-                else
-                {
-                    output = rates.Peek() * 1.02; // Small increase
-                }
-                break;
-            case 2:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    output = rates.Peek() + ((double)rnd.Next(2, 5) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady increase
-                }
-                else
-                {
-                    output = rates.Peek() - ((double)rnd.Next(1, 4) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady decrease
-                }
+	public double NextPrice()
+	{
+		double change = 2 * this.volatility * rnd.NextDouble();
+		double newPrice = this.rates.Peek();
+		double differenceFromCap = this.lowerPriceCap / this.rates.Peek();
 
-                break;
-            case 3:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    output = rates.Peek() * 1.016;
-                }
-                else
-                {
-                    output = rates.Peek() * 0.995;
-                }
-
-                break;
-            case 4:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    output = rates.Peek() * 1.013;
-                }
-                else
-                {
-                    output = rates.Peek() * 0.99;
-                }
-
-                break;
-            case 5:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    output = rates.Peek() * 1.021;
-                }
-                else
-                {
-                    output = rates.Peek() * 0.99;
-                }
-
-                break;
-            case 6:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    output = rates.Peek() * 1.01;
-                }
-                else
-                {
-                    output = rates.Peek() * 0.99;
-                }
-                break;
-            case 7:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    if ((double)rnd.Next(1, 5) > 3)
-                    {
-                        output = rates.Peek() - ((double)rnd.Next(5, 10) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady decrease
-                    }
-                    else
-                    {
-                        output = rates.Peek() + ((double)rnd.Next(2, 6) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady increase
-                    }
-                }
-                else
-                {
-                    output = rates.Peek() - ((double)rnd.Next(1, 4) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady decrease
-                }
-
-                break;
-            default:
-                if ((double)rnd.Next(1, 3) == 1)
-                {
-                    if ((double)rnd.Next(1, 6) > 3)
-                    {
-                        output = rates.Peek() - ((double)rnd.Next(rnd.Next(1, 4), rnd.Next(3, 8)) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady decrease
-                    }
-                    else
-                    {
-                        output = rates.Peek() + ((double)rnd.Next(rnd.Next(2, 4), rnd.Next(3, 6)) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady increase
-                    }
-                }
-                else
-                {
-                    output = rates.Peek() - ((double)rnd.Next(1, 4) / (double)rnd.Next(97, 101)) * rates.Peek(); // Steady decrease
-                }
-                break;
-        }
-        return output;
-
-    }
+		if (rnd.NextDouble() * CHANCE_OF_DEEP_DIVE == 1) //We do a deep dive;
+		{
+			newPrice *= (1 + (rnd.NextDouble() * (DEEP_DIVE_HIGH_CAP - DEEP_DIVE_LOW_CAP)));
+		}
+		else if (change > this.volatility)
+		{
+			if (rnd.NextDouble() < differenceFromCap) //We are getting close to lower cap
+			{
+				newPrice += newPrice * change; //Let the stockprice rise
+			} 
+			else
+			{
+				change -= 2 * this.volatility;
+				newPrice += newPrice * change;
+			}
+		}
+		else
+		{
+			newPrice += newPrice * change;
+		}
+		return newPrice;
+	}
 
 	public string GetName() {
-		return this.name;
+		return this.stockName;
 	}
 }

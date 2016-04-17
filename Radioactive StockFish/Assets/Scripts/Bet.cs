@@ -2,14 +2,14 @@
 using System.Collections;
 using System;
 
-public class Bet : MonoBehaviour {
+public class Bet {
 
 	private Stock stock;
 	private double betPrice;
 	private double goalRate;
 	private double betRate;
 	private int time;
-	private int odds;
+	private double odds;
 
 	public Bet(Stock stock, double betPrice, double betRate, double goalRate, int time) {
 		this.stock = stock;
@@ -17,7 +17,7 @@ public class Bet : MonoBehaviour {
 		this.betRate = betRate;
 		this.goalRate = goalRate;
 		this.time = time;
-		this.odds = 2;
+		this.odds = (Math.Abs(betRate / goalRate) / betRate) / 20.0 + 1;
 	}
 
 	public bool Tick() {
